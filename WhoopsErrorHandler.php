@@ -3,17 +3,18 @@ use Whoops\Run as Whoops;
 use Whoops\Handler\JsonResponseHandler;
 use Whoops\Handler\PrettyPageHandler;
 
-class WhoopsErrorHandler extends CErrorHandler
-{
+class WhoopsErrorHandler extends CErrorHandler {
 
 	/**
 	 * Whoops instance.
+	 *
 	 * @var Whoops
 	 */
 	protected $whoops;
 
 	/**
 	 * Page title in case of non-AJAX requests.
+	 *
 	 * @var string
 	 */
 	public $pageTitle = 'Whoops! we got a problem here';
@@ -21,8 +22,7 @@ class WhoopsErrorHandler extends CErrorHandler
 	/**
 	 * Instantiate Whoops with the correct handlers.
 	 */
-	public function __construct()
-	{
+	public function __construct() {
 		$this->whoops = new Whoops;
 
 		if (Yii::app()->request->isAjaxRequest) {
@@ -36,19 +36,19 @@ class WhoopsErrorHandler extends CErrorHandler
 
 	/**
 	 * Forwards an error to Whoops.
+	 *
 	 * @param CErrorEvent $event
 	 */
-	protected function handleError($event)
-	{
+	protected function handleError($event) {
 		$this->whoops->handleError($event->code, $event->message, $event->file, $event->line);
 	}
 
 	/**
 	 * Forwards an exception to Whoops.
+	 *
 	 * @param Exception $exception
 	 */
-	protected function handleException($exception)
-	{
+	protected function handleException($exception) {
 		$this->whoops->handleException($exception);
 	}
 
