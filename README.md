@@ -10,6 +10,7 @@ you don't need to have an action only for that.
 However, I do recomend you to set the default errorHandler in production servers, since you
 probably don't want to show users *useful debug information*, right? ;)
 
+
 Usage
 -----
 
@@ -33,6 +34,13 @@ Usage
     ```php
     'errorHandler' => ['class' => 'vendor.igorsantos07.yii-whoops.WhoopsErrorHandler']
     ```
+
+
+Sample screenshot
+-----------------
+<a href="http://i.imgur.com/pqt8fK4.png" alt="Sample screenshot">
+	<img src="http://i.imgur.com/pqt8fK4.png" width="650" />
+</a>
 
 [Composer]:http://getcomposer.org/
 [downloading]:https://github.com/igorsantos07/yii-whoops/archive/master.zip
