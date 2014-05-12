@@ -1,0 +1,19 @@
+{
+    "name": "igorsantos07/yii-whoops",
+    "description": "Whoops integration class into Yii Framework 1.1",
+    "license": "MIT",
+    "version": "1.0.0",
+    "minimum-stability": "dev",
+
+    "authors": [
+        {
+            "name": "Igor Santos",
+            "email": "igorsantos07+bugs@gmail.com",
+            "website": "http://www.igorsantos.com.br"
+        }
+    ],
+
+    "require": {
+        "filp/whoops": "1.*"
+    }
+}
