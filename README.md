@@ -13,8 +13,14 @@ probably don't want to show users *useful debug information*, right? ;)
 Usage
 -----
 
-1. First, install it via Composer (`composer require igorsantos07/yii-whoops:1`) or download
-   and unpack it in your `extensions` folder.
+1. Install it:
+    - Using [Composer] (it will automatically install Whoops main libraries as well):
+
+    ```shell
+    composer require igorsantos07/yii-whoops:1 && composer install
+    ```
+    
+    - Or [downloading] and unpacking it in your `extensions` folder.
 
 2. If you're using Composer, I strongly recomend you to create a `vendor` alias if you haven't yet.
    Add this to the beginning of your `config/main.php`:
@@ -28,3 +34,6 @@ Usage
     ```php
     'errorHandler' => ['class' => 'vendor.igorsantos07.yii-whoops.WhoopsErrorHandler']
     ```
+
+[Composer]:http://getcomposer.org/
+[downloading]:https://github.com/igorsantos07/yii-whoops/archive/master.zip
