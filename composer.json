@@ -8,13 +8,15 @@
     "authors": [
         {
             "name": "Igor Santos",
-            "email": "igorsantos07+bugs@gmail.com",
-            "website": "http://www.igorsantos.com.br"
+            "email": "igorsantos07+bugs@gmail.com"
         }
     ],
 
     "require": {
         "filp/whoops": "1.*",
         "yiisoft/yii": "1.1.*"
+    },
+    "require-dev": {
+        "igorsantos07/yii-whoops": "1"
     }
 }
