@@ -15,11 +15,10 @@ Usage
 
 1. Install it:
     - Using [Composer] (it will automatically install Whoops main libraries as well):
-
     ```shell
-    composer require igorsantos07/yii-whoops:1 && composer install
+    composer require igorsantos07/yii-whoops:1
+    composer install
     ```
-    
     - Or [downloading] and unpacking it in your `extensions` folder.
 
 2. If you're using Composer, I strongly recomend you to create a `vendor` alias if you haven't yet.
