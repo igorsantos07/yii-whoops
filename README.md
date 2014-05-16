@@ -35,12 +35,25 @@ Usage
     'errorHandler' => ['class' => 'vendor.igorsantos07.yii-whoops.WhoopsErrorHandler']
     ```
 
+4. If you're using some custom LogRoute that binds to the application's end, you can disable it using
+   the component's `disabledLogRoutes` property. Just set it to an array containing all the classnames
+   (not aliases!) of each route you want disabled whenever Whoops is launched. By default it disables
+   the famous (Yii Debug Toolbar)[ydtb]; if you want to keep it enabled, override the
+   `defaultDisabledLogRoutes` property.
+
+   ```php
+   'errorHandler' => [
+       'class'             => 'vendor.igorsantos07.yii-whoops.WhoopsErrorHandler',
+       'disabledLogRoutes' => 'MyCustomRouteClass'
+   ]
+   ```
 
 Sample screenshot
 -----------------
 <a href="http://i.imgur.com/pqt8fK4.png" alt="Sample screenshot">
-	<img src="http://i.imgur.com/pqt8fK4.png" width="650" />
+    <img src="http://i.imgur.com/pqt8fK4.png" width="650" />
 </a>
 
 [Composer]:http://getcomposer.org/
 [downloading]:https://github.com/igorsantos07/yii-whoops/archive/master.zip
+[ydtb]:http://github.com/malyshev/yii-debug-toolbar
