@@ -2,7 +2,6 @@
     "name": "igorsantos07/yii-whoops",
     "description": "Whoops integration class into Yii Framework 1.1",
     "license": "MIT",
-    "version": "1.0.0",
     "minimum-stability": "dev",
 
     "authors": [
