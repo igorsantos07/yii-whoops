@@ -134,7 +134,7 @@ class WhoopsErrorHandler extends CErrorHandler {
 					$this->whoops->handleError($event->code, $event->message, $event->file, $event->line);
 				}
 				catch (\Exception $e) {
-					$this->whoops->handleException($e);
+					$this->handleException($e);
 				}
 			}
 		}
