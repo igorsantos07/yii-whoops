@@ -71,10 +71,6 @@ class WhoopsErrorHandler extends CErrorHandler {
 	 * @param CErrorEvent $event
 	 */
 	protected function handleError($event) {
-		if (!YII_DEBUG) {
-			parent::handleError($event);
-			return;
-		}
 		$this->disableLogRoutes();
 		$this->whoops->handleError($event->code, $event->message, $event->file, $event->line);
 	}
@@ -84,10 +80,6 @@ class WhoopsErrorHandler extends CErrorHandler {
 	 * @param Exception $exception
 	 */
 	protected function handleException($exception) {
-		if ($exception instanceof CHttpException && $this->errorAction!==null || !YII_DEBUG) {
-			parent::handleException($exception);
-			return;
-		}
 		$this->disableLogRoutes();
 		$this->whoops->handleException($exception);
 	}
