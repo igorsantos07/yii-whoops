@@ -11,10 +11,10 @@ class WhoopsErrorHandler extends CErrorHandler {
 	protected $whoops;
 
 	/**
-	 * Page title in case of non-AJAX requests.
+	 * Page title in case of non-AJAX requests. Whoops already have a default "Whoops! There was an error."
 	 * @var string
 	 */
-	public $pageTitle = 'Whoops! we got a problem here';
+	public $pageTitle;
 
 	protected $defaultDisabledLogRoutes = array('YiiDebugToolbarRoute');
 
@@ -38,7 +38,8 @@ class WhoopsErrorHandler extends CErrorHandler {
 		}
 		else {
 			$page_handler = new PrettyPageHandler;
-			$page_handler->setPageTitle($this->pageTitle);
+			if ($this->pageTitle)
+				$page_handler->setPageTitle($this->pageTitle);
 
 			$reordered_tables = array(
 				'Request information'   => static::createRequestTable(),
