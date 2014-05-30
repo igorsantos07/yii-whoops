@@ -1,14 +1,16 @@
 Yii Error Handler with Whoops
 =============================
 
-Integrates the Whoops library into Yii 1.1.
+Integrates the Whoops library into Yii 1.1 and enables further error processing.
 
-Instead of depending on an action to display error stuff, this error handler calls directly
-Whoops methods to handle the problems for you. They automatically outputs the error page, so
-you don't need to have an action only for that.
+Current `CErrorHandler` behaviour is to use internal error views to display development problems,
+such as the `error` and `exception` views. If you're not in debug mode, it will simply call the
+vanilla error action and display less stuff in the screen so your users don't get ugly errors.
 
-However, I do recomend you to set the default errorHandler in production servers, since you
-probably don't want to show users *useful debug information*, right? ;)
+This new implementation allows you to - if needed - include a last, global error handler before
+displaying error messages. The `errorAction` is called and, if it can't handle the issue,
+we take the stage and decide what to do with the error - if you're debugging the application we
+will give you a really, really nice error page that will help you finding what's wrong :)
 
 
 Usage
@@ -47,6 +49,20 @@ Usage
        'disabledLogRoutes' => 'MyCustomRouteClass'
    ]
    ```
+
+5. There were some changes in the API for further error action handling. If you want to have custom
+   error pages you can as usual include a `errorAction` property into the `errorHandler` above, but
+   with the following differences:
+
+   - `Yii::app()->errorHandler->error` now can be a `CEvent` in case of PHP errors or a normal `Exception`
+     in case of, uh, exceptions. Have that in mind when handling errors in your action, as PHP Errors have
+     no code and etc - however, if you're showing an error page is advised to use the standard 500 code.
+   - If your action is unable to handle the error, Whoops will still get to the stage as usual. Example:
+     all API errors in your app will show a small message and redirect the user, while other errors are
+     real problems and should be handled by the framework's error handler.
+     To tell `WhoopsErrorHandler` you've taken care of the issue, call `Yii::app()->errorHandler->handled()`,
+     and then Whoops will not interfere with what the action has done; if after the action he still thinks
+     he should do something, the Whoops error page will be called as usual.
 
 Sample screenshot
 -----------------

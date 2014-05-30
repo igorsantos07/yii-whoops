@@ -26,6 +26,12 @@ class WhoopsErrorHandler extends CErrorHandler {
 	 */
 	protected $problem;
 
+	protected $handled = false;
+
+	public function handled() {
+		$this->handled = true;
+	}
+
 	/**
 	 * Instantiate Whoops with the correct handlers.
 	 */
@@ -115,12 +121,22 @@ class WhoopsErrorHandler extends CErrorHandler {
 	 * @param CErrorEvent $event
 	 */
 	protected function handleError($event) {
-		$this->beforeHandling($event);
-		try {
-			$this->whoops->handleError($event->code, $event->message, $event->file, $event->line);
-		}
-		catch (\Exception $e) {
-			$this->handleException($e);
+		if ($this->beforeHandling($event)) {
+
+			if($this->isAjaxRequest()) {
+				$app->displayError($event->code, $event->message, $event->file, $event->line);
+			}
+			elseif(!YII_DEBUG) {
+				parent::render('error', $event);
+			}
+			else {
+				try {
+					$this->whoops->handleError($event->code, $event->message, $event->file, $event->line);
+				}
+				catch (\Exception $e) {
+					$this->whoops->handleException($e);
+				}
+			}
 		}
 	}
 
@@ -129,15 +145,45 @@ class WhoopsErrorHandler extends CErrorHandler {
 	 * @param Exception $exception
 	 */
 	protected function handleException($exception) {
-		$this->beforeHandling($exception);
-		$this->whoops->handleException($exception);
+		if ($this->beforeHandling($exception)) {
+			if(!headers_sent()) {
+				$code = ($exception instanceof CHttpException)? $exception->statusCode : 500;
+				$msg  = $this->getHttpHeader($code, get_class($exception));
+				header("{$_SERVER['SERVER_PROTOCOL']} $code $msg");
+			}
+
+			if($exception instanceof CHttpException || !YII_DEBUG)
+				parent::render('error', $exception);
+			else {
+				if($this->isAjaxRequest()) {
+					$app->displayException($exception);
+				}
+				else {
+					if ($this->errorAction)
+						Yii::app()->runController($this->errorAction);
+
+					if (!$this->handled)
+						$this->whoops->handleException($exception);
+				}
+			}
+		}
+
 	}
 
 	protected function beforeHandling($problem) {
 		$this->problem = $problem;
 		$this->disableLogRoutes();
-		if ($this->errorAction) {
-			Yii::app()->runController($this->errorAction);
+
+		if (Yii::app() instanceof CWebApplication) {
+			return true;
+		}
+		else {
+			if ($problem instanceof \Exception)
+				Yii::app()->displayException($problem);
+			elseif ($problem instanceof CErrorEvent)
+				$app->displayError($problem->code, $problem->message, $problem->file, $problem->line);
+
+			return false;
 		}
 	}
 
