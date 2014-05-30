@@ -10,7 +10,7 @@ class YiiInspector extends \Whoops\Exception\Inspector {
 		$frames = array_map(function($frame) { return $frame->getRawFrame(); }, $frames_obj);
 
 		//Skipping Whoops and Yii handlers
-		$frames = array_slice($frames, 5);
+		$frames = array_slice($frames, 4);
 
 		return new FrameCollection($frames);
 	}

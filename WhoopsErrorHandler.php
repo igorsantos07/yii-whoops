@@ -59,7 +59,7 @@ class WhoopsErrorHandler extends CErrorHandler {
 
 	protected static function createRequestTable() {
 		$request = array();
-		$header = array();
+		$header  = array();
 		if (isset($_SERVER['SERVER_PROTOCOL'])) $header[] = $_SERVER['SERVER_PROTOCOL'];
 		if (isset($_SERVER['REQUEST_METHOD'])) $header[] = $_SERVER['REQUEST_METHOD'];
 		if (isset($_SERVER['HTTP_HOST'])) $header[] = $_SERVER['HTTP_HOST'];
@@ -117,7 +117,8 @@ class WhoopsErrorHandler extends CErrorHandler {
 		$this->beforeHandling($event);
 		try {
 			$this->whoops->handleError($event->code, $event->message, $event->file, $event->line);
-		} catch (\Exception $e) {
+		}
+		catch (\Exception $e) {
 			$this->handleException($e);
 		}
 	}
