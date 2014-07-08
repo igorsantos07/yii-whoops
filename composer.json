@@ -1,7 +1,7 @@
 {
     "name": "igorsantos07/yii-whoops",
     "description": "Whoops integration class into Yii Framework 1.1",
-    "keywords": ["yii", "whoops", "error", "error-handling", "exception", "trace", "stack-trace"],
+    "keywords": ["yii", "whoops", "error", "handling", "handler", "error-handling", "error-handler", "exception", "trace", "stack-trace"],
     "type": "yii-extension",
     "license": "BSD-3-Clause",
     "minimum-stability": "dev",
