@@ -43,24 +43,41 @@ class WhoopsErrorHandler extends CErrorHandler {
 			$this->whoops->pushHandler(new JsonResponseHandler);
 		}
 		else {
-			$page_handler = new PrettyPageHandler;
-			if ($this->pageTitle)
-				$page_handler->setPageTitle($this->pageTitle);
+			$contentType = '';
+			foreach (headers_list() as $header) {
+				list($key, $value) = explode(':', $header);
+				$value = ltrim($value, ' ');
+				if (strtolower($key) === 'content-type') {
+					// Split encoding if exists
+					$contentType = explode(";", strtolower($value));
+					$contentType = current($contentType);
+					break;
+				}
+			}
 
-			$reordered_tables = array(
-				'Request information'   => static::createRequestTable(),
-				"GET Data"              => $_GET,
-				"POST Data"             => $_POST,
-				"Files"                 => $_FILES,
-				"Cookies"               => $_COOKIE,
-				"Session"               => isset($_SESSION)? $_SESSION : array(),
-				"Environment Variables" => $_ENV,
-				"Server/Request Data"   => $_SERVER,
-			);
-			foreach ($reordered_tables as $label => $data)
-				$page_handler->addDataTable($label, $data);
+			if ($contentType && strpos($contentType, 'json')) {
+				$this->whoops->pushHandler(new JsonResponseHandler);
+			}
+			else {
+				$page_handler = new PrettyPageHandler;
+				if ($this->pageTitle)
+					$page_handler->setPageTitle($this->pageTitle);
 
-			$this->whoops->pushHandler($page_handler);
+				$reordered_tables = array(
+					'Request information'   => static::createRequestTable(),
+					"GET Data"              => $_GET,
+					"POST Data"             => $_POST,
+					"Files"                 => $_FILES,
+					"Cookies"               => $_COOKIE,
+					"Session"               => isset($_SESSION)? $_SESSION : array(),
+					"Environment Variables" => $_ENV,
+					"Server/Request Data"   => $_SERVER,
+				);
+				foreach ($reordered_tables as $label => $data)
+					$page_handler->addDataTable($label, $data);
+
+				$this->whoops->pushHandler($page_handler);
+			}
 		}
 	}
 
@@ -124,7 +141,7 @@ class WhoopsErrorHandler extends CErrorHandler {
 		if ($this->beforeHandling($event)) {
 
 			if($this->isAjaxRequest()) {
-				$app->displayError($event->code, $event->message, $event->file, $event->line);
+				Yii::app()->displayError($event->code, $event->message, $event->file, $event->line);
 			}
 			elseif(!YII_DEBUG) {
 				parent::render('error', $event);
@@ -156,7 +173,7 @@ class WhoopsErrorHandler extends CErrorHandler {
 				parent::render('error', $exception);
 			else {
 				if($this->isAjaxRequest()) {
-					$app->displayException($exception);
+					Yii::app()->displayException($exception);
 				}
 				else {
 					if ($this->errorAction)
@@ -181,7 +198,7 @@ class WhoopsErrorHandler extends CErrorHandler {
 			if ($problem instanceof \Exception)
 				Yii::app()->displayException($problem);
 			elseif ($problem instanceof CErrorEvent)
-				$app->displayError($problem->code, $problem->message, $problem->file, $problem->line);
+				Yii::app()->displayError($problem->code, $problem->message, $problem->file, $problem->line);
 
 			return false;
 		}
